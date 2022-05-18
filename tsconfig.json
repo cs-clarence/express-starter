@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig/tsconfig.node.json",
+  "exclude": ["dist"],
+
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.mts",
+    "src/**/*.cts",
+    "src/**/*.js",
+    "src/**/*.cjs",
+    "src/**/*.mjs",
+    "src/**/*.json"
+  ],
+
+  "compilerOptions": {
+    /* Modules */
+    "rootDir": "./src", // Normally inferred by TypeScript but set it explicitly here
+    "paths": {
+      "$/*": ["./src/*"]
+    },
+    /* Modules */
+
+    /* Emit */
+    "outDir": "./dist",
+    "declarationDir": "./dist"
+    /* Emit */
+  }
+}
