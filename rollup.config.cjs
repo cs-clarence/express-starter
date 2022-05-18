@@ -5,22 +5,25 @@ const json = require("@rollup/plugin-json");
 const { terser } = require("rollup-plugin-terser");
 
 module.exports = (args) => {
-  let production = false;
+  let inProduction = false;
 
   if (process.env.NODE_ENV) {
-    production = process.env.NODE_ENV.toLowerCase() === "production";
+    inProduction = process.env.NODE_ENV.toLowerCase() === "production";
   }
 
   if (process.env.BUILD) {
-    production = process.env.BUILD.toLowerCase() === "production";
+    inProduction = process.env.BUILD.toLowerCase() === "production";
   }
+
+  const DIST_FOLDER_NAME = "dist";
+  const DEV_BUILD_FOLDER_NAME = ".dev.build";
 
   /** @type {import("rollup").RollupOptions} */
   const options = {
     input: "src/index.ts",
     output: {
       sourcemap: false,
-      dir: production ? "dist" : ".dev.build",
+      dir: inProduction ? DIST_FOLDER_NAME : DEV_BUILD_FOLDER_NAME,
       format: "es",
     },
 
@@ -29,12 +32,12 @@ module.exports = (args) => {
       typescript({
         outputToFilesystem: true,
         compilerOptions: {
-          outDir: production ? "dist" : ".dev.build",
+          outDir: inProduction ? DIST_FOLDER_NAME : DEV_BUILD_FOLDER_NAME,
         },
       }),
       json(),
-      production ? nodeResolve() : null,
-      production ? terser() : null,
+      inProduction ? nodeResolve() : null,
+      inProduction ? terser() : null,
     ],
   };
 
