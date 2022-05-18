@@ -2,8 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     /* Language and Environment */
-    "target": "ESNext",
-    "lib": ["ESNext", "DOM", "WebWorker"],
+    "lib": ["ESNext", "DOM", "WebWorker"]
     /* Language and Environment */
   }
 }

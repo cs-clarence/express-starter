@@ -1,6 +1,5 @@
 {
-  "watch": ["src"],
-  "ext": "ts,js,json",
-  "ignore": ["src/**/*.d.ts"],
-  "exec": "npm run lint && npx ts-node -r tsconfig-paths/register ./src/index.ts"
+  "watch": ["./.dev.build"],
+  "ext": "ts,mts,cts,js,mjs,cjs,json,jsx,tsx,scss,css,sass,svelte,vue",
+  "exec": "node ./.dev.build/index.js"
 }

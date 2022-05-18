@@ -1,4 +1,4 @@
-import express from "express";
+const { default: express } = await import("express");
 
 const app = express();
 

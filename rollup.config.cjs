@@ -3,22 +3,40 @@ const typescript = require("@rollup/plugin-typescript");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const json = require("@rollup/plugin-json");
 const { terser } = require("rollup-plugin-terser");
-const { defineConfig } = require("rollup");
 
-module.exports = defineConfig({
-  input: "src/index.ts",
+module.exports = (args) => {
+  let production = false;
 
-  output: {
-    sourcemap: "hidden",
-    dir: "dist",
-    format: "cjs",
-  },
+  if (process.env.NODE_ENV) {
+    production = process.env.NODE_ENV.toLowerCase() === "production";
+  }
 
-  plugins: [
-    commonjs(),
-    typescript({ outputToFilesystem: true }),
-    json(),
-    nodeResolve(),
-    terser(),
-  ],
-});
+  if (process.env.BUILD) {
+    production = process.env.BUILD.toLowerCase() === "production";
+  }
+
+  /** @type {import("rollup").RollupOptions} */
+  const options = {
+    input: "src/index.ts",
+    output: {
+      sourcemap: false,
+      dir: production ? "dist" : ".dev.build",
+      format: "es",
+    },
+
+    plugins: [
+      commonjs(),
+      typescript({
+        outputToFilesystem: true,
+        compilerOptions: {
+          outDir: production ? "dist" : ".dev.build",
+        },
+      }),
+      json(),
+      production ? nodeResolve() : null,
+      production ? terser() : null,
+    ],
+  };
+
+  return options;
+};

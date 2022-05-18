@@ -21,8 +21,7 @@
     /* Modules */
 
     /* Emit */
-    "outDir": "./dist",
-    "declarationDir": "./dist"
+    "outDir": "./dist"
     /* Emit */
   }
 }
