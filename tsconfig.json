@@ -14,7 +14,7 @@
 
   "compilerOptions": {
     /* Modules */
-    "rootDir": "./src", // Normally inferred by TypeScript but set it explicitly here
+    "rootDir": "./src",
     "paths": {
       "$/*": ["./src/*"]
     },
