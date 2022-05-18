@@ -8,4 +8,4 @@
 - `npm run dev` - Run development server
 - `npm run build` - Build production version
 - `npm run lint` - Lint code
-- `npm run prettier` - Format code
+- `npm run format` - Format code
