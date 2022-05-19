@@ -1,5 +1,0 @@
-{
-  "watch": ["./.dev.build"],
-  "ext": "ts,mts,cts,js,mjs,cjs,json,jsx,tsx,scss,css,sass,svelte,vue",
-  "exec": "node ./.dev.build/index.js"
-}

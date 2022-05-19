@@ -13,15 +13,11 @@
   ],
 
   "compilerOptions": {
-    /* Modules */
     "rootDir": "./src",
+    "baseUrl": "./",
     "paths": {
-      "$/*": ["./src/*"]
+      "$*": ["./src/*"]
     },
-    /* Modules */
-
-    /* Emit */
     "outDir": "./dist"
-    /* Emit */
   }
 }

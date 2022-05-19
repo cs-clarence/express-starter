@@ -1,10 +1,9 @@
-import app from "$/app.js";
+import app from "$app";
 import supertest from "supertest";
 
-test("/hello-world should respond with Hello, World!", (done) => {
-  supertest(app)
+test("/hello-world should respond with Hello, World!", async () => {
+  await supertest(app)
     .get("/hello-world")
     .expect(200)
-    .expect("Hello, World!")
-    .end(done);
+    .expect({ message: "Hello, World!" });
 });
