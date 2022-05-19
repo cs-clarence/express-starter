@@ -4,6 +4,7 @@ const rimraf = require("rimraf");
 const childProcess = require("child_process");
 const path = require("path");
 const commandLineArgs = require("command-line-args");
+const clc = require("cli-color");
 
 function main() {
   /**@type {[import("command-line-args").OptionDefinition]} */
@@ -42,34 +43,44 @@ function main() {
 
   const options = commandLineArgs(optionsDefinitions);
 
-  console.log(options);
+  if (options.watch) {
+    console.log(
+      clc.blue.bold(
+        "Running in watch mode. The project will be rebuilt and rerun on changes.",
+      ),
+    );
+  }
+
+  if (options.prod) {
+    console.log(
+      clc.blue.bold(
+        "Building project in production mode. This will bundle and minify the project and remove unused code.",
+      ),
+    );
+  }
 
   if (options.watch && options.prod) {
     console.warn(
-      `You're running in watch mode and in production mode. This is not recommended.
+      clc.yellow.bold(
+        `You're running in watch mode and in production mode. This is not recommended.
 Production mode will build the project with optimizations enabled and without sourcemaps which is not suitable for a development environment.
-Remove the --prod flag to continue to turn off production mode.
+Remove the --prod/-p flag to turn off production mode.
 `,
+      ),
     );
   }
 
   build({
     inProd: options.prod,
     watch: options.watch,
-    outdir: options.outdir,
+    outDir: options.outdir,
     watchOutDir: options["watch-outdir"],
     entryPoint: options["entry-point"],
   });
 }
 
-async function build({
-  inProd,
-  outdir = "dist",
-  watch = false,
-  watchOutDir = ".esbuild",
-  entryPoint = "src/index.ts",
-}) {
-  rimraf.sync(outdir);
+async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
+  rimraf.sync(inProd ? outDir : watchOutDir);
 
   let runningChildProcess = null;
 
@@ -93,18 +104,17 @@ async function build({
       entryPoints: [entryPoint],
       bundle: true,
       treeShaking: inProd,
-      outExtension: { ".js": ".ts" },
-      outdir,
+      outdir: inProd ? outDir : watchOutDir,
       platform: "node",
-      // external: IN_PROD ? null : ["./node_modules"],
-      format: "esm",
+      external: inProd ? [] : ["./node_modules"],
+      format: "cjs",
       minify: inProd,
-      sourcemap: inProd ? false : "inline",
-      splitting: inProd,
+      sourcemap: inProd ? false : "linked",
+      // splitting: inProd,
       incremental: watch,
       define: {
-        "process.env.NODE_ENV": inProd ? "production" : "development",
-        "process.env.BUILD": inProd ? "production" : "development",
+        "process.env.NODE_ENV": inProd ? '"production"' : '"development"',
+        "process.env.BUILD": inProd ? '"production"' : '"development"',
       },
       watch: watch && {
         onRebuild: (error, result) => {
