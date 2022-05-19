@@ -1,3 +1,4 @@
+/* eslint-disable */
 // jest.config.js
 const { pathsToModuleNameMapper } = require("ts-jest");
 // In the following statement, replace `./tsconfig` with the path to your `tsconfig` file
@@ -11,6 +12,7 @@ const { compilerOptions } = JSON5.parse(
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
+  rootDir: "./src",
   preset: "ts-jest",
   testEnvironment: "node",
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
