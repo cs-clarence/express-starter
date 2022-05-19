@@ -60,7 +60,7 @@ async function main() {
   if (options.prod) {
     console.log(
       message(
-        "Building project in production mode. This will bundle and minify the project and remove unused code.\n",
+        "🔥 Building project in production mode. This will bundle and minify the project and remove unused code.\n",
       ),
     );
   }
@@ -86,7 +86,9 @@ Remove the --prod/-p flag to turn off production mode.\n
 }
 
 async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
-  rimraf.sync(inProd ? outDir : watchOutDir);
+  const outputDestination = watch ? watchOutDir : outDir;
+
+  rimraf.sync(outputDestination);
 
   let runningChildProcess = null;
 
@@ -107,7 +109,7 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
 
   const plugins = [];
 
-  if (!inProd) {
+  if (watch) {
     plugins.push(nodeExternalsPlugin());
   }
 
@@ -117,7 +119,7 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
       entryPoints: [entryPoint],
       bundle: true,
       treeShaking: inProd,
-      outdir: inProd ? outDir : watchOutDir,
+      outdir: outputDestination,
       platform: "node",
       format: "cjs",
       minify: inProd,
@@ -156,10 +158,7 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
   console.log(
     success(
       `✓ Build successful!
-✓ Output located at ${path.resolve(
-        __dirname,
-        inProd ? outDir : watchOutDir,
-      )}\n`,
+✓ Output located at ${path.resolve(__dirname, outputDestination)}\n`,
     ),
   );
 
