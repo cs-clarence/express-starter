@@ -1,9 +1,9 @@
 import app from "$app";
 import supertest from "supertest";
 
-test("/hello-world should respond with Hello, World!", async () => {
+test("/ should respond with Hello, World!", async () => {
   await supertest(app)
-    .get("/hello-world")
+    .get("/")
     .expect(200)
     .expect({ message: "Hello, World!" });
 });

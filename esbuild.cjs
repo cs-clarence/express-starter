@@ -5,13 +5,14 @@ const childProcess = require("child_process");
 const path = require("path");
 const commandLineArgs = require("command-line-args");
 const clc = require("cli-color");
+const { nodeExternalsPlugin } = require("esbuild-node-externals");
 
 const success = clc.green.bold;
 const warning = clc.yellow.bold;
 const message = clc.blue.bold;
 const error = clc.red.bold;
 
-function main() {
+async function main() {
   /**@type {[import("command-line-args").OptionDefinition]} */
   const optionsDefinitions = [
     {
@@ -75,7 +76,7 @@ Remove the --prod/-p flag to turn off production mode.\n
     );
   }
 
-  build({
+  await build({
     inProd: options.prod,
     watch: options.watch,
     outDir: options.outdir,
@@ -104,14 +105,20 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
     );
   }
 
+  const plugins = [];
+
+  if (!inProd) {
+    plugins.push(nodeExternalsPlugin());
+  }
+
   const result = await esbuild
     .build({
+      plugins: plugins.length > 0 ? plugins : undefined,
       entryPoints: [entryPoint],
       bundle: true,
       treeShaking: inProd,
       outdir: inProd ? outDir : watchOutDir,
       platform: "node",
-      external: inProd ? [] : ["./node_modules"],
       format: "cjs",
       minify: inProd,
       sourcemap: inProd ? false : "linked",
