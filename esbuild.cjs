@@ -6,6 +6,11 @@ const path = require("path");
 const commandLineArgs = require("command-line-args");
 const clc = require("cli-color");
 
+const success = clc.green.bold;
+const warning = clc.yellow.bold;
+const message = clc.blue.bold;
+const error = clc.red.bold;
+
 function main() {
   /**@type {[import("command-line-args").OptionDefinition]} */
   const optionsDefinitions = [
@@ -45,26 +50,26 @@ function main() {
 
   if (options.watch) {
     console.log(
-      clc.blue.bold(
-        "Running in watch mode. The project will be rebuilt and rerun on changes.",
+      message(
+        "🔥 Running in watch mode. The project will be rebuilt and rerun upon changes.\n",
       ),
     );
   }
 
   if (options.prod) {
     console.log(
-      clc.blue.bold(
-        "Building project in production mode. This will bundle and minify the project and remove unused code.",
+      message(
+        "Building project in production mode. This will bundle and minify the project and remove unused code.\n",
       ),
     );
   }
 
   if (options.watch && options.prod) {
     console.warn(
-      clc.yellow.bold(
+      warning(
         `You're running in watch mode and in production mode. This is not recommended.
 Production mode will build the project with optimizations enabled and without sourcemaps which is not suitable for a development environment.
-Remove the --prod/-p flag to turn off production mode.
+Remove the --prod/-p flag to turn off production mode.\n
 `,
       ),
     );
@@ -117,13 +122,17 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
         "process.env.BUILD": inProd ? '"production"' : '"development"',
       },
       watch: watch && {
-        onRebuild: (error, result) => {
-          if (error) {
-            console.error(error);
-            console.log("Watching for changes before rebuild...");
+        onRebuild: (err, _res) => {
+          if (err) {
+            console.error(err, "\n");
+            console.log(
+              error(
+                "X Encountered an error when building. Watching for changes before rebuild...\n",
+              ),
+            );
             return;
           }
-          console.log("Rebuild successful!");
+          console.log(success("✓ Rebuild successful!\n"));
 
           runOutputFile();
         },
@@ -136,6 +145,16 @@ async function build({ inProd, outDir, watch, watchOutDir, entryPoint }) {
   if (watch) {
     runOutputFile();
   }
+
+  console.log(
+    success(
+      `✓ Build successful!
+✓ Output located at ${path.resolve(
+        __dirname,
+        inProd ? outDir : watchOutDir,
+      )}\n`,
+    ),
+  );
 
   return result;
 }
