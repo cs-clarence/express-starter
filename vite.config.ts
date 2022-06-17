@@ -22,7 +22,7 @@ export default defineConfig(async () => {
     plugins: [
       ...VitePluginNode({
         adapter: "express",
-        tsCompiler: "esbuild",
+        tsCompiler: "swc",
         appPath: "./src/index.ts",
         appName: "app",
         exportName: "app",
