@@ -1,3 +1,4 @@
+export { default as app } from "./app";
 import app from "./app";
 
 const PORT = 3000;

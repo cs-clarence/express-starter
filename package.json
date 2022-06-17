@@ -2,7 +2,6 @@
   "name": "express-database-access",
   "version": "0.1.0",
   "description": "",
-  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -22,21 +21,21 @@
   "devDependencies": {
     "@types/cli-color": "^2.0.2",
     "@types/express": "^4.17.13",
-    "@types/jest": "^27.5.1",
+    "@types/node": "^18.0.0",
     "@types/supertest": "^2.0.12",
-    "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "chalk": "^5.0.1",
-    "cli-color": "^2.0.2",
-    "command-line-args": "^5.2.1",
-    "esbuild": "^0.14.39",
-    "esbuild-node-externals": "^1.4.1",
-    "eslint": "^8.15.0",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "c8": "^7.11.3",
+    "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
-    "jest": "^28.1.0",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "supertest": "^6.2.3",
-    "ts-jest": "^28.0.2",
-    "typescript": "^4.6.4"
+    "tsconfig": "github:cs-clarence/tsconfig",
+    "typescript": "^4.7.3",
+    "vite": "^2.9.12",
+    "vite-plugin-node": "^1.0.0",
+    "vite-tsconfig-paths": "^3.5.0",
+    "vitest": "^0.15.1"
   }
 }
