@@ -8,7 +8,13 @@ export default defineConfig(async () => {
       port: 3000,
     },
     build: {
+      emptyOutDir: true,
       minify: true,
+      rollupOptions: {
+        output: {
+          format: "esm",
+        },
+      },
     },
     test: {
       globals: true,

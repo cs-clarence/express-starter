@@ -13,6 +13,8 @@
   ],
 
   "compilerOptions": {
+    "types": ["vitest/globals"],
+
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
